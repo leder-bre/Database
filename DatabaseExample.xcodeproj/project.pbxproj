@@ -395,6 +395,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				DEVELOPMENT_TEAM = U2ZN2W2UQJ;
 				INFOPLIST_FILE = DatabaseExample/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = ca.on.rsgc.DatabaseExample;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -411,6 +412,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				DEVELOPMENT_TEAM = U2ZN2W2UQJ;
 				INFOPLIST_FILE = DatabaseExample/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = ca.on.rsgc.DatabaseExample;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -426,6 +428,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				DEVELOPMENT_TEAM = U2ZN2W2UQJ;
 				INFOPLIST_FILE = DatabaseExampleTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = ca.on.rsgc.DatabaseExampleTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -441,6 +444,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				DEVELOPMENT_TEAM = U2ZN2W2UQJ;
 				INFOPLIST_FILE = DatabaseExampleTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = ca.on.rsgc.DatabaseExampleTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -468,6 +472,7 @@
 				810110EF1DD207B0007D39AC /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		810110F01DD207B0007D39AC /* Build configuration list for PBXNativeTarget "DatabaseExampleTests" */ = {
 			isa = XCConfigurationList;
@@ -476,6 +481,7 @@
 				810110F21DD207B0007D39AC /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
