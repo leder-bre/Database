@@ -21,7 +21,7 @@
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="7" translatesAutoresizingMaskIntoConstraints="NO" id="PGp-Zt-4vj">
                                 <subviews>
-                                    <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="38C-Sc-goX">
+                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="38C-Sc-goX">
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="60" translatesAutoresizingMaskIntoConstraints="NO" id="EWg-HQ-tHa">
                                                 <constraints>
@@ -35,10 +35,13 @@
                                                 <nil key="textColor"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits"/>
+                                                <connections>
+                                                    <action selector="findOnParitalName:" destination="BYZ-38-t0r" eventType="editingChanged" id="kRs-gL-YYM"/>
+                                                </connections>
                                             </textField>
                                         </subviews>
                                     </stackView>
-                                    <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="m5R-RK-lUc">
+                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="m5R-RK-lUc">
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Address" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Y6w-8r-BMM">
                                                 <constraints>
@@ -55,7 +58,7 @@
                                             </textField>
                                         </subviews>
                                     </stackView>
-                                    <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="La7-MO-dfO">
+                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="La7-MO-dfO">
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Phone" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IU0-R4-8Ul">
                                                 <constraints>
@@ -95,24 +98,55 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="🔍 by name, address, or phone number." borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="0Kk-dD-Gdx">
+                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="u9E-H4-FmO">
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="g20-wQ-zAv">
+                                        <state key="normal" title="&lt;"/>
+                                        <connections>
+                                            <action selector="lastResult:" destination="BYZ-38-t0r" eventType="touchUpInside" id="aAO-Wx-U7I"/>
+                                            <action selector="nextResult:" destination="BYZ-38-t0r" eventType="touchUpInside" id="gqT-aQ-FFj"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kOz-lH-Ewy">
+                                        <state key="normal" title="&gt;"/>
+                                        <connections>
+                                            <action selector="nextResult:" destination="BYZ-38-t0r" eventType="touchUpInside" id="WqT-6K-vtI"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                            </stackView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
+                            <constraint firstItem="u9E-H4-FmO" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="20" id="03H-yH-14y"/>
                             <constraint firstItem="Xx9-hm-Zsq" firstAttribute="top" secondItem="PGp-Zt-4vj" secondAttribute="bottom" constant="5" id="0Oh-fm-Ckr"/>
                             <constraint firstAttribute="trailingMargin" secondItem="PGp-Zt-4vj" secondAttribute="trailing" constant="20" id="0yj-iE-j3I"/>
                             <constraint firstAttribute="trailingMargin" secondItem="bmU-SZ-yxX" secondAttribute="trailing" constant="20" id="FwI-lT-tmp"/>
                             <constraint firstItem="Xx9-hm-Zsq" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="20" id="NY9-Ef-Yvy"/>
+                            <constraint firstItem="0Kk-dD-Gdx" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="20" id="Rmb-eC-9uu"/>
+                            <constraint firstItem="0Kk-dD-Gdx" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="20" id="Umn-hs-1ny"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="0Kk-dD-Gdx" secondAttribute="trailing" constant="20" id="bQq-4f-lPS"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="u9E-H4-FmO" secondAttribute="trailing" constant="20" id="cB0-fX-IXG"/>
+                            <constraint firstItem="PGp-Zt-4vj" firstAttribute="top" secondItem="u9E-H4-FmO" secondAttribute="bottom" constant="5" id="eZf-Kp-fWc"/>
                             <constraint firstItem="PGp-Zt-4vj" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="20" id="fI4-rP-Tli"/>
                             <constraint firstAttribute="trailingMargin" secondItem="Xx9-hm-Zsq" secondAttribute="trailing" constant="20" id="gKI-kw-xGx"/>
                             <constraint firstItem="bmU-SZ-yxX" firstAttribute="top" secondItem="Xx9-hm-Zsq" secondAttribute="bottom" constant="10" id="jnV-gM-SMQ"/>
-                            <constraint firstItem="PGp-Zt-4vj" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="20" id="qbe-3h-Arl"/>
                             <constraint firstItem="bmU-SZ-yxX" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="20" id="qdB-gu-AOv"/>
+                            <constraint firstItem="u9E-H4-FmO" firstAttribute="top" secondItem="0Kk-dD-Gdx" secondAttribute="bottom" constant="5" id="sVG-q7-njS"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="address" destination="SQa-L3-FPF" id="QLh-fA-2ME"/>
+                        <outlet property="backButton" destination="g20-wQ-zAv" id="404-f5-pVQ"/>
+                        <outlet property="forwardButton" destination="kOz-lH-Ewy" id="VEL-kw-T10"/>
                         <outlet property="name" destination="4kF-3u-6Pu" id="Jar-DQ-ala"/>
                         <outlet property="phone" destination="oIZ-Ee-h92" id="6Ta-u8-VjP"/>
+                        <outlet property="search" destination="0Kk-dD-Gdx" id="jmx-r1-Vin"/>
                         <outlet property="status" destination="bmU-SZ-yxX" id="Jte-qU-rjV"/>
                     </connections>
                 </viewController>
