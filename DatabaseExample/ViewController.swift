@@ -19,6 +19,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var backButton: UIButton!
     // Will save path to database file
     var databasePath = NSString()
+    var results : FMResultSet?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -187,46 +188,32 @@ class ViewController: UIViewController, UITextFieldDelegate {
                 // Now, open the database and insert data from the view (the user interface)
                 if contactDB.open() {
                     
-                    // Get form field value
-                    guard let nameValue : String = name.text else {
-                        status.text = "Please provide a name."
+                    guard let searchString : String = search.text else {
+                        status.text = "No search data"
                         return
                     }
                     
+                    // Get form field value
+                    
                     // Create SQL statement to find data
-                    let SQL = "SELECT address, phone FROM CONTACTS WHERE name = '\(nameValue)'"
+                    let SQL = "SELECT name, address, phone FROM CONTACTS WHERE name LIKE '%\(searchString)%' OR address LIKE '%\(searchString)%' OR phone LIKE '%\(searchString)%'"
                     
                     // Run query
                     do {
                         
                         // Try to run the query
-                        let results : FMResultSet? = try contactDB.executeQuery(SQL, values: nil)
+                        results = try contactDB.executeQuery(SQL, values: nil)
                         
                         // We know database should exist now (since viewDidLoad runs at startup)
                         // Now, open the database and select data using value given for name in the view (user interface)
-                        if results?.next() == true {    // Something was found for this query
-                            
-                            guard let addressValue : String = results?.string(forColumn: "address") else {
-                                print("Nil value returned from query for the address, that's odd.")
-                                return
-                            }
-                            guard let phoneValue : String = results?.string(forColumn: "phone") else {
-                                print("Nil value returned from query for the phone number, that's odd.")
-                                return
-                            }
-                            
-                            // Load the results in the view (user interface)
-                            address.text = addressValue
-                            phone.text = phoneValue
-                            status.text = "Record found!"
-                            
+                        
+                        if results?.next() == true {
+                            showNextResult()
                         } else {
-                            
-                            // Nothing was found for this query
-                            status.text = "Record not found"
+                            status.text = "Nothing Found"
                             address.text = ""
                             phone.text = ""
-                            
+                            name.text = ""
                         }
                         
                         // Close the database
