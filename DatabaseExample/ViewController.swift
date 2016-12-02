@@ -8,6 +8,17 @@
 
 import UIKit
 
+struct Contact {
+    var name : String
+    var address : String
+    var phone : String
+    init(name : String, address : String, phone : String) {
+        self.name = name
+        self.address = address
+        self.phone = phone
+    }
+}
+
 class ViewController: UIViewController, UITextFieldDelegate {
     
     @IBOutlet weak var search: UITextField!
@@ -18,6 +29,9 @@ class ViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var forwardButton: UIButton!
     @IBOutlet weak var backButton: UIButton!
     // Will save path to database file
+    var contacts : [Contact] = []
+    var contactCount = 0
+    var maxCount = -1
     var databasePath = NSString()
     var results : FMResultSet?
     var contactDB : FMDatabase?
@@ -123,127 +137,153 @@ class ViewController: UIViewController, UITextFieldDelegate {
     }
     
     @IBAction func lastResult(_ sender: AnyObject) {
+        print("last")
+        contactCount -= 2
+        print(contactCount)
+        forwardButton.isEnabled = true
+        //print(contacts[contactCount].name)
+        backButton.isEnabled = contactCount > 0
+        if contactCount > 0 {
+            name.text = contacts[contactCount].name
+            phone.text = contacts[contactCount].phone
+            address.text = contacts[contactCount].address
+        } else {
+            name.text = contacts[0].name
+            phone.text = contacts[0].phone
+            address.text = contacts[0].address
+        }
     }
     
     @IBAction func nextResult(_ sender: AnyObject) {
+        contactCount += 1
         showNextResult()
     }
     
     func showNextResult() {
-        if results?.hasAnotherRow() == true {
-            
-            guard let nameValue : String = results?.string(forColumn: "name") else {
-                print("Nil value returned from query for the address, that's odd.")
-                return
-            }
-            guard let addressValue : String = results?.string(forColumn: "address") else {
-                print("Nil value returned from query for the address, that's odd.")
-                return
-            }
-            guard let phoneValue : String = results?.string(forColumn: "phone") else {
-                print("Nil value returned from query for the phone number, that's odd.")
-                return
-            }
-            
-            // Load the results in the view (user interface)
-            name.text = nameValue
-            address.text = addressValue
-            phone.text = phoneValue
-            
-            // Enable the next result button if there is another result
-            if results?.next() == true {
-                if results?.hasAnotherRow() == true {
-                    forwardButton.isEnabled = true
-                }
-            } else {
-                forwardButton.isEnabled = false
+        backButton.isEnabled = contactCount > 0
+        if contactCount < contacts.count {
+            name.text = contacts[contactCount].name
+            phone.text = contacts[contactCount].phone
+            address.text = contacts[contactCount].address
+            print(contactCount)
+            print(maxCount)
+            forwardButton.isEnabled = (contactCount < maxCount)
+        } else {
+            if results?.hasAnotherRow() == true {
                 
-                // Close the database
-                if contactDB?.close() == true {
-                    print("DB closed")
+                guard let nameValue : String = results?.string(forColumn: "name") else {
+                    print("Nil value returned from query for the address, that's odd.")
+                    return
+                }
+                guard let addressValue : String = results?.string(forColumn: "address") else {
+                    print("Nil value returned from query for the address, that's odd.")
+                    return
+                }
+                guard let phoneValue : String = results?.string(forColumn: "phone") else {
+                    print("Nil value returned from query for the phone number, that's odd.")
+                    return
                 }
                 
+                // Load the results in the view (user interface)
+                name.text = nameValue
+                address.text = addressValue
+                phone.text = phoneValue
+                
+                contacts.append(Contact(name: nameValue, address: addressValue, phone: phoneValue))
+                
+                // Enable the next result button if there is another result
+                if results?.next() == true {
+                    if results?.hasAnotherRow() == true {
+                        forwardButton.isEnabled = true
+                    }
+                } else {
+                    forwardButton.isEnabled = false
+                    maxCount = contactCount
+                    // Close the database
+                    if contactDB?.close() == true {
+                        print("DB closed")
+                    }
+                    
+                }
+                
             }
+            print("Another row?")
+            print(results?.hasAnotherRow())
+            print("contents of next row")
+            print(results?.resultDictionary())
         }
-        print("Another row?")
-        print(results?.hasAnotherRow())
-        print("contents of next row")
-        print(results?.resultDictionary())
     }
     
     @IBAction func findContact(_ sender: Any) {
-        guard let searchString = search.text else {return}
         
-        if searchString == "" {
-            name.text = ""
-            address.text = ""
-            phone.text = ""
-            forwardButton.isEnabled = false
-            backButton.isEnabled = false
-        } else {
+        // Establish path to database through FMDatabase wrapper
+        if let contactDB = FMDatabase(path: databasePath as String) {
             
-            // Establish path to database through FMDatabase wrapper
-            if let contactDB = FMDatabase(path: databasePath as String) {
+            // We know database should exist now (since viewDidLoad runs at startup)
+            // Now, open the database and insert data from the view (the user interface)
+            if contactDB.open() {
                 
-                // We know database should exist now (since viewDidLoad runs at startup)
-                // Now, open the database and insert data from the view (the user interface)
-                if contactDB.open() {
-                    
-                    guard let searchString : String = search.text else {
-                        status.text = "No search data"
-                        return
-                    }
-                    
-                    // Get form field value
-                    
-                    // Create SQL statement to find data
-                    let SQL = "SELECT name, address, phone FROM CONTACTS WHERE name LIKE '%\(searchString)%' OR address LIKE '%\(searchString)%' OR phone LIKE '%\(searchString)%'"
-                    
-                    // Run query
-                    do {
-                        
-                        // Try to run the query
-                        results = try contactDB.executeQuery(SQL, values: nil)
-                        
-                        // We know database should exist now (since viewDidLoad runs at startup)
-                        // Now, open the database and select data using value given for name in the view (user interface)
-                        
-                        if results?.next() == true {
-                            showNextResult()
-                        } else {
-                            status.text = "Nothing Found"
-                            address.text = ""
-                            phone.text = ""
-                            name.text = ""
-                        }
-                        
-                        // Close the database
-                        contactDB.close()
-                        
-                    } catch {
-                        
-                        // Query did not run, so report an error
-                        print("Error: \(contactDB.lastErrorMessage())")
-                    }
-                    
+                guard let searchString : String = search.text else {
+                    status.text = "No search data"
+                    return
                 }
                 
-            } else {
+                // Get form field value
                 
-                // Database could not be opened, report an error
-                print("Error: Database could not be opened.")
+                // Create SQL statement to find data
+                let SQL = "SELECT name, address, phone FROM CONTACTS WHERE name LIKE '%\(searchString)%' OR address LIKE '%\(searchString)%' OR phone LIKE '%\(searchString)%'"
+                
+                // Run query
+                do {
+                    
+                    // Try to run the query
+                    results = try contactDB.executeQuery(SQL, values: nil)
+                    
+                    // We know database should exist now (since viewDidLoad runs at startup)
+                    // Now, open the database and select data using value given for name in the view (user interface)
+                    
+                    if results?.next() == true {
+                        showNextResult()
+                    } else {
+                        status.text = "Nothing Found"
+                        address.text = ""
+                        phone.text = ""
+                        name.text = ""
+                    }
+                    
+                    // Close the database
+                    // contactDB.close()
+                    
+                } catch {
+                    
+                    // Query did not run, so report an error
+                    print("Error: \(contactDB.lastErrorMessage())")
+                }
                 
             }
+            
+        } else {
+            
+            // Database could not be opened, report an error
+            print("Error: Database could not be opened.")
+            
         }
     }
     
     //MARK: UITextFieldDelagate
     
-    @IBAction func findOnParitalName(_ sender: UITextField) {
-        findContact(self)
-    }
-    func textFieldDidBeginEditing(_ textField: UITextField) {
-        print("Name: \(name.text)")
+    @IBAction func findOnParitalName(_ sender: AnyObject) {
+        if let searchString = search.text {
+            if searchString == "" {
+                name.text = ""
+                address.text = ""
+                phone.text = ""
+                forwardButton.isEnabled = false
+                backButton.isEnabled = false
+            } else {
+                findContact(sender)
+            }
+        }
     }
 }
 
