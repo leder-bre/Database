@@ -20,6 +20,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
     // Will save path to database file
     var databasePath = NSString()
     var results : FMResultSet?
+    var contactDB : FMDatabase?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -152,10 +153,10 @@ class ViewController: UIViewController, UITextFieldDelegate {
             // Enable the next result button if there is another result
             if results?.next() == true {
                 if results?.hasAnotherRow() == true {
-                    buttonNext.isEnabled = true
+                    forwardButton.isEnabled = true
                 }
             } else {
-                buttonNext.isEnabled = false
+                forwardButton.isEnabled = false
                 
                 // Close the database
                 if contactDB?.close() == true {
