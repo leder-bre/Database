@@ -124,6 +124,49 @@ class ViewController: UIViewController, UITextFieldDelegate {
     }
     
     @IBAction func nextResult(_ sender: AnyObject) {
+        showNextResult()
+    }
+    
+    func showNextResult() {
+        if results?.hasAnotherRow() == true {
+            
+            guard let nameValue : String = results?.string(forColumn: "name") else {
+                print("Nil value returned from query for the address, that's odd.")
+                return
+            }
+            guard let addressValue : String = results?.string(forColumn: "address") else {
+                print("Nil value returned from query for the address, that's odd.")
+                return
+            }
+            guard let phoneValue : String = results?.string(forColumn: "phone") else {
+                print("Nil value returned from query for the phone number, that's odd.")
+                return
+            }
+            
+            // Load the results in the view (user interface)
+            name.text = nameValue
+            address.text = addressValue
+            phone.text = phoneValue
+            
+            // Enable the next result button if there is another result
+            if results?.next() == true {
+                if results?.hasAnotherRow() == true {
+                    buttonNext.isEnabled = true
+                }
+            } else {
+                buttonNext.isEnabled = false
+                
+                // Close the database
+                if contactDB?.close() == true {
+                    print("DB closed")
+                }
+                
+            }
+        }
+        print("Another row?")
+        print(results?.hasAnotherRow())
+        print("contents of next row")
+        print(results?.resultDictionary())
     }
     
     @IBAction func findContact(_ sender: Any) {
